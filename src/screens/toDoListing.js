@@ -9,7 +9,8 @@ class ToDoList extends Component {
     constructor(){
         super();
         this.state={
-
+            currentPage:2,
+            taskPerPage:2
         }
     }
     saveTask = (newTask) => {
@@ -28,6 +29,19 @@ class ToDoList extends Component {
         this.props.setSearchText(text);
     };
     render() {
+        const { currentPage, taskPerPage } = this.state;
+        let taskys = (this.props.priorityFilter!=="All")?
+            _.filter(this.props.tasks,(obj) => { return (obj.priority===this.props.priorityFilter &&
+                (_.includes(obj.title, this.props.searchText)))})
+            : _.filter(this.props.tasks,(obj) => { return (_.includes(obj.title, this.props.searchText ))})
+
+        const indexOfLastTodo = currentPage * taskPerPage;
+        const indexOfFirstTodo = indexOfLastTodo - taskPerPage;
+        const currentTodos = taskys.slice(indexOfFirstTodo, indexOfLastTodo);
+        const pageNumbers = [];
+        for (let i = 1; i <= Math.ceil(taskys.length / taskPerPage); i++) {
+            pageNumbers.push(i);
+        }
         return (
             <div className={'container-fluid text-center'}>
                 <div className="row content">
@@ -41,13 +55,15 @@ class ToDoList extends Component {
                     </div>
                     <div className={'col-sm-8 text-left'}>
                         <AddTask saveTask={this.saveTask}/>
-                        <ListTask list={(this.props.priorityFilter!=="All")?
-                            _.filter(this.props.tasks,(obj) => { return (obj.priority===this.props.priorityFilter &&
-                                (_.includes(obj.title, this.props.searchText)))})
-                            : _.filter(this.props.tasks,(obj) => { return (_.includes(obj.title, this.props.searchText ))})}
+                        <ListTask list={currentTodos}
                                   deleteTask={this.deleteTask}
                                   editTask={this.editTask}
                         />
+                        <ul className="pagination">
+                            {pageNumbers.map((i)=>{
+                                return <li onClick={()=>{this.setState({currentPage:i})}}><a>{i}</a></li>
+                            })}
+                        </ul>
                     </div>
                 </div>
             </div>

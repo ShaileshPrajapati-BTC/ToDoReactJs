@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import {createPost} from "../../action/index";
-import { connect } from 'react-redux'
-import _ from 'lodash'
+import {HotKeys} from 'react-hotkeys';
+
 class AddTask extends Component {
     saveTask = () => {
         let newTaskObj = {
@@ -12,11 +11,19 @@ class AddTask extends Component {
         }
         this.props.saveTask(newTaskObj);
     }
-    render() {
-        return (
 
-                <div className={'panel panel-default'} >
-                    <div className="panel-heading">Add Task</div>
+    render() {
+        const keyMap = {
+            moveUp: 'down',
+        }
+
+        const handlers = {
+            'moveUp': (event) => document.getElementById('txtTitle').focus()
+        };
+        return (
+            <HotKeys keyMap={keyMap} handlers={handlers} focused>
+            <div className={'panel panel-default'} >
+                <div className="panel-heading">Add Task</div>
                     <div className="panel-body">
                         <div className={"form-group"}>
                             <div className={"col-sm-3"}>
@@ -39,6 +46,7 @@ class AddTask extends Component {
 
                     </div>
                 </div>
+            </HotKeys>
 
 
         );

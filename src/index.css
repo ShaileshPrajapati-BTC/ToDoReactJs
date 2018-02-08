@@ -12,3 +12,11 @@ body {
   height:175px;
   width: 598px;
 }
+
+div[tabindex="-1"]:focus {
+  outline: 0;
+}
+
+.wrapWord {
+  word-wrap: break-word;
+}

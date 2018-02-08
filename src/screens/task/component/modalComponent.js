@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import {Label,Modal,Button} from 'react-bootstrap'
+import {Modal,Button} from 'react-bootstrap';
+import {HotKeys} from 'react-hotkeys';
+
+const map = {
+    'snapLeft': 'command+left',
+    'deleteNode': ['del', 'backspace']
+};
+
 class ModalComponent extends Component {
     constructor(props) {
         super(props);
@@ -24,6 +31,7 @@ class ModalComponent extends Component {
     render() {
 
         return (
+
             <Modal
                 show={this.props.show}
                 onHide={()=>this.props.handleHide()}
